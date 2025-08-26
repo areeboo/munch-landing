@@ -1,4 +1,5 @@
 import dns from "node:dns/promises";
+import { config } from "./config";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
 
@@ -15,7 +16,7 @@ function domainOf(email: string) {
   return email.split("@")[1]?.toLowerCase() || "";
 }
 
-async function hasMx(domain: string, timeoutMs = 2500): Promise<boolean> {
+async function hasMx(domain: string, timeoutMs = config.email.validation.dnsTimeoutMs): Promise<boolean> {
   try {
     const res = await Promise.race([
       dns.resolveMx(domain),
