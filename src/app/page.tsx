@@ -24,7 +24,7 @@ export default function Page() {
       </div>
       {/* Top Nav (brand + NOVA badge + theme toggle) */}
       <header className="sticky top-0 z-50 backdrop-blur-xl bg-card/80 supports-[backdrop-filter]:shadow-sm animate-fade-in border-b border-black/10 dark:border-white/10">
-        <div className="mx-auto max-w-6xl px-4 py-3 relative flex items-center justify-center">
+        <div className="mx-auto max-w-6xl px-4 py-5 sm:py-3 relative flex items-center justify-center">
           <div className="flex items-center gap-3">
             <span className="text-3xl font-black tracking-tight gradient-text">🍽️ The Munch</span>
             <div className="ml-3 flex flex-col items-center relative group">
