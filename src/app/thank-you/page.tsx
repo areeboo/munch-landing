@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from 'react';
+import ThemeToggle from '@/components/ThemeToggle';
 import Link from 'next/link';
 
 export default function ThankYouPage() {
@@ -21,15 +22,24 @@ export default function ThankYouPage() {
   }, []);
 
   return (
-    <main className="min-h-screen" style={{
-      background: 'linear-gradient(135deg, #111827 0%, #1f2937 50%, #111827 100%)'
-    }}>
-      <div className="flex items-center justify-center min-h-screen p-4">
-        <div className="w-full max-w-2xl space-y-8">
+    <main className="min-h-screen relative">
+      {/* Theme toggle top-left */}
+      <div className="absolute left-4 top-4 z-10">
+        <ThemeToggle />
+      </div>
+      {/* subtle texture overlay */}
+      <div className="pointer-events-none absolute inset-0 opacity-[0.06]" style={{
+        backgroundImage:
+          'radial-gradient(rgba(255,255,255,0.6) 1px, transparent 1px)',
+        backgroundSize: '6px 6px',
+      }} />
+
+      <div className="flex items-center justify-center min-h-screen p-6 sm:p-8">
+        <div className="w-full max-w-2xl space-y-10">
           
           {/* Success Card */}
-          <div className="card bg-base-100 shadow-2xl">
-            <div className="card-body text-center p-12">
+          <div className="card bg-base-100/95 shadow-2xl backdrop-blur-xl">
+            <div className="card-body text-center p-10 sm:p-12">
               {/* Success Icon with Pulse */}
               <div className="mx-auto mb-8 animate-pulse" style={{
                 width: '80px',
@@ -61,11 +71,11 @@ export default function ThankYouPage() {
                 }
               `}</style>
 
-              <h1 className="text-5xl font-bold mb-6" style={{ color: '#f97316' }}>
+              <h1 className="text-4xl sm:text-5xl font-extrabold mb-4 sm:mb-6 leading-tight" style={{ color: '#f97316' }}>
                 🎉 Welcome to The Munch!
               </h1>
               
-              <p className="text-xl text-base-content opacity-80 leading-relaxed max-w-lg mx-auto">
+              <p className="text-lg sm:text-xl text-base-content opacity-80 leading-relaxed max-w-lg mx-auto">
                 Thanks for subscribing{email ? `, ${email.split('@')[0]}` : ''}! 
                 You're all set to receive the best cheap eats in Northern Virginia.
               </p>
@@ -73,31 +83,34 @@ export default function ThankYouPage() {
           </div>
 
           {/* What's Next Card */}
-          <div className="card shadow-xl" style={{
-            background: 'linear-gradient(135deg, #fed7aa 0%, #fdba74 100%)'
-          }}>
-            <div className="card-body p-10">
-              <div className="text-center mb-6">
-                <h2 className="text-3xl font-bold text-gray-900">What happens next?</h2>
+          <div className="card bg-base-200/70 backdrop-blur-xl shadow-xl">
+            <div className="card-body p-8 sm:p-10">
+              <div className="text-center mb-4 sm:mb-6">
+                <h2 className="text-2xl sm:text-3xl font-extrabold text-foreground">What happens next?</h2>
               </div>
-              
+
               <div className="space-y-4">
                 {[
-                  "First newsletter arrives this Sunday",
-                  "5-8 verified deals under $10",
-                  "Unsubscribe anytime with one click"
+                  'First newsletter arrives this Sunday',
+                  '5–8 verified deals under $10',
+                  'Unsubscribe anytime with one click',
                 ].map((item, index) => (
-                  <div key={index} className="flex items-center p-5 bg-white bg-opacity-70 rounded-2xl shadow-sm">
-                    <div style={{
-                      width: '12px',
-                      height: '12px',
-                      background: '#dc2626',
-                      borderRadius: '50%',
-                      marginRight: '20px',
-                      flexShrink: 0,
-                      boxShadow: '0 0 8px rgba(220, 38, 38, 0.6)'
-                    }}></div>
-                    <span className="font-bold text-lg" style={{ color: '#1f2937' }}>{item}</span>
+                  <div
+                    key={index}
+                    className="flex items-center p-5 rounded-2xl border dark:bg-white/5 bg-black/5 dark:border-white/10 border-black/10"
+                  >
+                    <div
+                      className="mr-4 flex-shrink-0 rounded-full shadow"
+                      style={{
+                        width: '12px',
+                        height: '12px',
+                        background: '#f97316',
+                        boxShadow: '0 0 10px rgba(249, 115, 22, 0.6)',
+                      }}
+                    />
+                    <span className="font-semibold text-base sm:text-lg text-foreground leading-relaxed">
+                      {item}
+                    </span>
                   </div>
                 ))}
               </div>
@@ -107,10 +120,10 @@ export default function ThankYouPage() {
           {/* Social links removed per request */}
 
           {/* Back to Home */}
-          <div className="text-center pt-4">
+          <div className="text-center pt-2">
             <Link 
               href="/" 
-              className="btn btn-outline btn-lg text-white border-white border-opacity-30 hover:bg-white hover:text-gray-900"
+              className="btn btn-outline btn-lg rounded-2xl shadow-sm hover:shadow-lg hover:scale-[1.02] text-foreground dark:border-white/30 border-black/20 hover:bg-foreground hover:text-background focus:ring-2 focus:ring-offset-2 focus:ring-foreground/40"
               style={{ transition: 'all 0.3s ease' }}
             >
               <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">

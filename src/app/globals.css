@@ -1,8 +1,9 @@
 @import "tailwindcss";
 @plugin "daisyui";
 
-/* optional: set theme */
-:root { color-scheme: dark; }
+/* color-scheme follows current theme */
+:root { color-scheme: light; --bg-light: #fff3e6; /* latte variant; prev: #fff7ed */ }
+html.dark { color-scheme: dark; }
 
 /* Custom scrollbar for dark theme */
 ::-webkit-scrollbar {
@@ -23,9 +24,17 @@
 }
 
 /* Food-inspired warm dark theme */
-body {
+/* Light and dark backgrounds */
+html.dark body {
   background-color: hsl(25, 20%, 6%);
   color: hsl(30, 15%, 90%);
+  font-feature-settings: 'rlig' 1, 'calt' 1;
+}
+
+html:not(.dark) body {
+  /* Light background uses a CSS variable for easy swapping */
+  background-color: var(--bg-light, #fff7ed);
+  color: hsl(222, 47%, 11%);
   font-feature-settings: 'rlig' 1, 'calt' 1;
 }
 
@@ -82,6 +91,41 @@ input:focus, textarea:focus, select:focus {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+}
+
+/* Typography pairing */
+h1, h2, h3, .display {
+  font-family: var(--font-display), ui-serif, Georgia, Cambria, "Times New Roman", serif;
+  letter-spacing: -0.01em;
+}
+
+/* NOVA Edition badge - theme aware */
+.nova-badge {
+  transition: all 150ms ease;
+}
+
+html:not(.dark) .nova-badge {
+  background: rgba(255, 255, 255, 0.75);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  color: hsl(24, 95%, 35%);
+  box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+}
+
+html.dark .nova-badge {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  color: hsl(30, 15%, 96%);
+  box-shadow: 0 1px 2px rgba(0,0,0,0.3);
+}
+
+html:not(.dark) .nova-badge:hover { background: rgba(255,255,255,0.95); }
+html.dark .nova-badge:hover { background: rgba(255,255,255,0.14); }
+
+/* Subscribe card contrast adjustments (light mode) */
+html:not(.dark) .subscribe-card {
+  background: rgba(255, 255, 255, 0.96);
+  border-color: rgba(0, 0, 0, 0.1);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
 }
 
 /* Shimmer effect */
