@@ -34,7 +34,7 @@ export default function ThemeToggle() {
   }
 
   const base =
-    "btn btn-outline rounded-full transition-all duration-200 focus:ring-2 focus:ring-offset-2 btn-sm sm:btn-md px-3 sm:px-4";
+    "btn btn-outline rounded-full transition-all duration-200 focus:ring-2 focus:ring-offset-2 btn-sm sm:btn-md px-3 sm:px-4 min-w-[44px] min-h-[44px]";
   const themed =
     theme === "dark"
       ? "border-white/20 text-white bg-white/5 hover:bg-white/10 focus:ring-white/40"

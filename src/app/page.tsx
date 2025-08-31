@@ -1,5 +1,6 @@
 import SubscribeForm from "@/components/SubscribeForm";
 import ThemeToggle from "@/components/ThemeToggle";
+import LocationBadge from "@/components/LocationBadge";
 
 export default function Page() {
   return (
@@ -24,55 +25,20 @@ export default function Page() {
       </div>
       {/* Top Nav (brand + NOVA badge + theme toggle) */}
       <header className="sticky top-0 z-50 backdrop-blur-xl bg-card/80 supports-[backdrop-filter]:shadow-sm animate-fade-in border-b border-black/10 dark:border-white/10">
-        <div className="mx-auto max-w-6xl px-4 py-4 sm:py-3 relative flex items-center justify-center pl-16 sm:pl-0">
-          <div className="flex items-center gap-3">
-            <span className="text-3xl font-black tracking-tight gradient-text">🍽️ The Munch</span>
-            <div className="ml-3 flex flex-col items-center relative group">
-              <button className="nova-badge btn btn-sm rounded-full uppercase tracking-wider flex items-center gap-1.5 px-3">
-                NOVA Edition
-                <svg className="w-3 h-3 transition-transform duration-300 group-hover:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path>
-                </svg>
-              </button>
-              <span className="text-xs text-muted-foreground font-medium mt-0.5">Northern Virginia</span>
-
-              <div className="absolute top-full mt-2 w-64 rounded-2xl shadow-xl hidden group-hover:block z-50 bg-base-200/90 border border-white/10 backdrop-blur-xl">
-                <div className="p-4">
-                  <div className="text-sm font-semibold text-foreground mb-3 flex items-center gap-2">
-                    <span className="w-2 h-2 bg-emerald-400 rounded-full"></span>
-                    Current Location
-                  </div>
-                  <div className="rounded-lg p-3 mb-4 bg-base-100/80">
-                    <div className="font-medium">Northern Virginia (NOVA)</div>
-                    <div className="text-xs text-muted-foreground mt-1">Arlington • Alexandria • Fairfax • Loudoun • Prince William</div>
-                  </div>
-
-                  <div className="text-sm font-semibold text-foreground mb-3 flex items-center gap-2">
-                    <span className="w-2 h-2 bg-amber-400 rounded-full animate-pulse"></span>
-                    Coming Soon
-                  </div>
-                  <div className="space-y-2">
-                    {["Washington DC", "New York City", "Baltimore", "Philadelphia"].map((city) => (
-                      <div key={city} className="py-2 px-3 bg-base-100/70 rounded-lg">
-                        <div className="font-medium text-foreground text-sm">{city}</div>
-                        <div className="text-xs text-muted-foreground">{city === "Washington DC" ? "Metro area" : city === "New York City" ? "Manhattan & Brooklyn" : city === "Baltimore" ? "Inner Harbor & Fells Point" : "Center City & Fishtown"}</div>
-                      </div>
-                    ))}
-                  </div>
-
-                  <div className="mt-4 pt-3 text-center">
-                    <span className="text-xs text-muted-foreground">Want your city next? </span>
-                    <a href="mailto:hello@themunch.news" className="text-xs text-primary hover:text-primary/80 underline font-medium">Let us know!</a>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Prominent toggle on top-left */}
-          <div className="absolute left-3 top-1/2 -translate-y-1/2 sm:left-0">
+        <div className="mx-auto max-w-6xl px-4 py-4 sm:py-3 relative grid grid-cols-3 items-center">
+          {/* Left: Theme toggle (no overlap) */}
+          <div className="justify-self-start">
             <ThemeToggle />
           </div>
+
+          {/* Center: Brand + NOVA badge */}
+          <div className="flex items-center gap-3 justify-self-center">
+            <span className="text-3xl font-black tracking-tight gradient-text">🍽️ The Munch</span>
+            <LocationBadge />
+          </div>
+
+          {/* Right spacer (keeps brand centered) */}
+          <div className="justify-self-end" />
         </div>
       </header>
 
