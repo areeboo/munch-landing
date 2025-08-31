@@ -47,7 +47,8 @@ export async function POST(req: Request) {
     // Derive server-side context from headers/cookies
     const reqUrl = new URL(req.url);
     const hdrs = req.headers;
-    const cookieStore = cookies();
+    // Next 15+ makes cookies() async; await to get the store
+    const cookieStore = await cookies();
     function parseJSONSafe<T>(s: string | undefined | null): T | null { try { return s ? JSON.parse(s) as T : null; } catch { return null; } }
     function parseHost(h: string | null): string | null { if (!h) return null; try { return new URL(h).host; } catch { return h; } }
     
