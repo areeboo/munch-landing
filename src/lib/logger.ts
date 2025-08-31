@@ -154,12 +154,13 @@ export function createRequestContext(req: Request) {
   const method = req.method;
   const url = new URL(req.url);
   const path = url.pathname;
+  const started = Date.now();
   
   return {
     requestId,
     method,
     path,
-    startTime: Date.now(),
+    startTime: started,
     
     // Helper to log this specific request
     log: {
@@ -173,7 +174,7 @@ export function createRequestContext(req: Request) {
     
     // Helper to log request completion
     finish: (statusCode: number) => {
-      const duration = Date.now() - Date.now();
+      const duration = Date.now() - started;
       logger.apiRequest(method, path, statusCode, duration, { requestId });
     }
   };

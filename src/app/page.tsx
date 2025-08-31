@@ -24,7 +24,7 @@ export default function Page() {
       </div>
       {/* Top Nav (brand + NOVA badge + theme toggle) */}
       <header className="sticky top-0 z-50 backdrop-blur-xl bg-card/80 supports-[backdrop-filter]:shadow-sm animate-fade-in border-b border-black/10 dark:border-white/10">
-        <div className="mx-auto max-w-6xl px-4 py-3 relative flex items-center justify-center">
+        <div className="mx-auto max-w-6xl px-4 py-4 sm:py-3 relative flex items-center justify-center pl-16 sm:pl-0">
           <div className="flex items-center gap-3">
             <span className="text-3xl font-black tracking-tight gradient-text">🍽️ The Munch</span>
             <div className="ml-3 flex flex-col items-center relative group">
@@ -70,7 +70,7 @@ export default function Page() {
           </div>
 
           {/* Prominent toggle on top-left */}
-          <div className="absolute left-0 top-1/2 -translate-y-1/2">
+          <div className="absolute left-3 top-1/2 -translate-y-1/2 sm:left-0">
             <ThemeToggle />
           </div>
         </div>

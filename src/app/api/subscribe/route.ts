@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { cookies } from "next/headers";
 import clientPromise from "@/lib/mongo";
 import { rateLimit, getClientIP } from "@/lib/rateLimit";
 import { validateSubscribeRequest, createErrorResponse } from "@/lib/validation";
@@ -40,8 +41,71 @@ export async function POST(req: Request) {
       return response;
     }
 
-    const { email, profile, utm, source } = validation.data!;
+    const { email, profile, utm, source, context: clientContext } = validation.data!;
     context.log.info("Processing subscription", { email, source });
+
+    // Derive server-side context from headers/cookies
+    const reqUrl = new URL(req.url);
+    const hdrs = req.headers;
+    const cookieStore = cookies();
+    function parseJSONSafe<T>(s: string | undefined | null): T | null { try { return s ? JSON.parse(s) as T : null; } catch { return null; } }
+    function parseHost(h: string | null): string | null { if (!h) return null; try { return new URL(h).host; } catch { return h; } }
+    
+    // Basic server context
+    const serverContext = {
+      ip: getClientIP(req),
+      forwardedFor: hdrs.get('x-forwarded-for') || null,
+      userAgent: hdrs.get('user-agent') || null,
+      referer: hdrs.get('referer') || null,
+      acceptLanguage: hdrs.get('accept-language') || null,
+      host: hdrs.get('host') || null,
+      country: hdrs.get('cf-ipcountry') || hdrs.get('x-vercel-ip-country') || null,
+      requestPath: reqUrl.pathname,
+      requestTime: new Date().toISOString(),
+      firstTouchCookies: {
+        firstVisit: cookieStore.get('munch_first_visit')?.value || null,
+        firstUrl: cookieStore.get('munch_first_url')?.value || null,
+        referrer: cookieStore.get('munch_referrer')?.value || null,
+        firstUtm: cookieStore.get('munch_first_utm')?.value || null,
+        lastUtm: cookieStore.get('munch_last_utm')?.value || null,
+      },
+      geo: {
+        city: hdrs.get('x-vercel-ip-city') || null,
+        region: hdrs.get('x-vercel-ip-country-region') || null,
+        country: hdrs.get('x-vercel-ip-country') || hdrs.get('cf-ipcountry') || null,
+        continent: hdrs.get('x-vercel-ip-continent') || null,
+        latitude: hdrs.get('x-vercel-ip-latitude') || null,
+        longitude: hdrs.get('x-vercel-ip-longitude') || null,
+        timezone: hdrs.get('x-vercel-ip-timezone') || null,
+      },
+      asn: {
+        number: hdrs.get('x-vercel-ip-asn') || null,
+        name: hdrs.get('x-vercel-ip-as-name') || null,
+      }
+    };
+
+    // Attribution classification
+    const refHost = parseHost(serverContext.referer);
+    const lastUtmJson = parseJSONSafe<Record<string, string>>(serverContext.firstTouchCookies.lastUtm || null);
+    const firstUtmJson = parseJSONSafe<Record<string, string>>(serverContext.firstTouchCookies.firstUtm || null);
+    const utmObj = lastUtmJson || firstUtmJson || null;
+    function classifyReferral(): string {
+      const medium = utmObj?.utm_medium?.toLowerCase();
+      const hasPaidIds = Boolean(utmObj?.gclid || utmObj?.fbclid || utmObj?.msclkid);
+      if (hasPaidIds) return 'paid_ad';
+      if (medium && ['cpc','ppc','paid','display','paid_social','social_paid','ads'].includes(medium)) return 'paid_ad';
+      if (!serverContext.referer) return 'direct';
+      const h = (refHost || '').toLowerCase();
+      if (/google\.|bing\.|duckduckgo\.|yahoo\./.test(h)) return 'organic_search';
+      if (/facebook\.|instagram\.|t\.co$|twitter\.|x\.com|linkedin\.|reddit\./.test(h)) return 'social';
+      if (/mail\.|mail\.google\.com|outlook\.|yahoo\.mail|proton\.me|icloud\.com/.test(h)) return 'email';
+      return 'referral';
+    }
+    const attribution = {
+      referralType: classifyReferral(),
+      utm: utmObj,
+      refererHost: refHost,
+    };
 
     const client = await clientPromise;
     const db = client.db(config.database.name);
@@ -68,6 +132,11 @@ export async function POST(req: Request) {
               profile: profile || null,
               utm: utm || null,
               source: source || "landing",
+              context: {
+                client: (clientContext as any)?.client || null,
+                server: serverContext,
+                attribution,
+              },
               updatedAt: now,
             },
           },
