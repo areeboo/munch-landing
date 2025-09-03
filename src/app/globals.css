@@ -93,6 +93,32 @@ input:focus, textarea:focus, select:focus {
   background-clip: text;
 }
 
+/* Simple prose styles for blog content */
+.prose {
+  line-height: 1.75;
+}
+.prose h1, .prose h2, .prose h3, .prose h4 {
+  margin-top: 1.6em;
+  margin-bottom: 0.6em;
+  font-weight: 800;
+}
+.prose h1 { font-size: 2rem; }
+.prose h2 { font-size: 1.5rem; }
+.prose h3 { font-size: 1.25rem; }
+.prose p { margin: 0.9em 0; }
+.prose a { color: hsl(24, 95%, 60%); text-decoration: underline; text-underline-offset: 3px; }
+.prose ul { list-style: disc; padding-left: 1.25rem; margin: 0.8em 0; }
+.prose li { margin: 0.3em 0; }
+.prose code {
+  background: rgba(255,255,255,0.08);
+  padding: 0.15rem 0.35rem;
+  border-radius: 0.35rem;
+  font-size: 0.95em;
+}
+html:not(.dark) .prose code {
+  background: rgba(0,0,0,0.06);
+}
+
 /* Typography pairing */
 h1, h2, h3, .display {
   font-family: var(--font-display), ui-serif, Georgia, Cambria, "Times New Roman", serif;
@@ -126,6 +152,27 @@ html:not(.dark) .subscribe-card {
   background: rgba(255, 255, 255, 0.96);
   border-color: rgba(0, 0, 0, 0.1);
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+}
+
+/* Blog card surface with solid contrast in both themes */
+.blog-card {
+  transition-property: color, background-color, border-color, box-shadow, transform;
+}
+html:not(.dark) .blog-card {
+  background: rgba(255, 255, 255, 0.99);
+  border-color: rgba(0, 0, 0, 0.08);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+}
+html.dark .blog-card {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.12);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.45);
+}
+html:not(.dark) .blog-card:hover {
+  box-shadow: 0 12px 26px rgba(0, 0, 0, 0.10);
+}
+html.dark .blog-card:hover {
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.55);
 }
 
 /* Shimmer effect */

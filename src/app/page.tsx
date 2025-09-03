@@ -1,6 +1,4 @@
 import SubscribeForm from "@/components/SubscribeForm";
-import ThemeToggle from "@/components/ThemeToggle";
-import LocationBadge from "@/components/LocationBadge";
 
 export default function Page() {
   return (
@@ -23,24 +21,7 @@ export default function Page() {
           }}
         />
       </div>
-      {/* Top Nav (brand + NOVA badge + theme toggle) */}
-      <header className="sticky top-0 z-50 backdrop-blur-xl bg-card/80 supports-[backdrop-filter]:shadow-sm animate-fade-in border-b border-black/10 dark:border-white/10">
-        <div className="mx-auto max-w-6xl px-4 py-4 sm:py-3 relative grid grid-cols-3 items-center">
-          {/* Left: Theme toggle (no overlap) */}
-          <div className="justify-self-start">
-            <ThemeToggle />
-          </div>
-
-          {/* Center: Brand + NOVA badge */}
-          <div className="flex items-center gap-3 justify-self-center">
-            <span className="text-3xl font-black tracking-tight gradient-text">🍽️ The Munch</span>
-            <LocationBadge />
-          </div>
-
-          {/* Right spacer (keeps brand centered) */}
-          <div className="justify-self-end" />
-        </div>
-      </header>
+      {/* Global header moved to RootLayout */}
 
       {/* Hero: only three elements — pill, headline, subscribe card */}
       <section className="relative min-h-[calc(100svh-64px)] flex items-center py-0">

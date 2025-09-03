@@ -3,6 +3,7 @@ import { Geist, Geist_Mono, Playfair_Display } from "next/font/google";
 import "./globals.css";
 import ErrorBoundary from "@/components/ErrorBoundary";
 import AnalyticsBoot from "@/components/AnalyticsBoot";
+import SiteHeader from "@/components/SiteHeader";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -36,6 +37,7 @@ export default function RootLayout({
       >
         <ErrorBoundary>
           <AnalyticsBoot />
+          <SiteHeader />
           {children}
         </ErrorBoundary>
       </body>
